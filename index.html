@@ -4,15 +4,35 @@
     <meta charset="utf-8">
     <title>Hello, World! - A-Frame</title>
     <meta name="description" content="Hello, World! - A-Frame">
-    <script src="https://aframe.io/releases/0.5.0/aframe.min.js"></script>
+    <script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
     <script src="https://cdn.rawgit.com/zcanter/aframe-gradient-sky/master/dist/gradientsky.min.js"></script>
+    <script src="https://unpkg.com/aframe-state-component@^3.0.0/dist/aframe-state-component.min.js"></script>
+    <script>
+      AFRAME.registerState({
+        initialState: {
+          enemyPosition: {x: 0, y: 1, z: 2}
+        },
+
+        handlers: {
+          enemyMoved: function (state, action) {
+            state.enemyPosition = action.newPosition;
+          }
+        },
+      });
+    </script>
   </head>
   <body>
 
     <a-scene>
+      <a-entity position="10 0 -10" rotation="0 90 0">
+        <a-box color="#784e56" rotation="0 45 0" position="-1 0.5 -6" depth="5" height="1" width="5"></a-box>
+        <a-box position="0 1.5 -5" rotation="0 45 0" color="#4CC3D9"></a-box>
+      </a-entity>
+
+      <a-entity bind__position="enemyPosition"></a-entity>
+
+
       <a-gradient-sky material="shader: gradient; topColor: 3 4 2; bottomColor: 31 71 56"></a-gradient-sky>
-      <a-box color="#784e56" rotation="0 45 0" position="-1 0.5 -6" depth="5" height="2" width="5"></a-box>
-      <a-box position="-1.367 2 -5" rotation="0 45 0" color="#4CC3D9"></a-box>
       <a-plane src="#ground" color="#070a0c" height="100" width="100" rotation="-90 0 0"></a-plane>
     </a-scene>
   </body>
