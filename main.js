@@ -1,4 +1,4 @@
-const MODIFIER = 1;
+const MODIFIER = 2;
 const MARGIN = MODIFIER * 2;
 
 function fetchDirectoryTree(url) {
@@ -38,16 +38,25 @@ function createFolder (folder) {
   boxEl.setAttribute('width', (MARGIN * 5));
   document.querySelector('a-scene').appendChild(boxEl);
 
+  // Folder text
+  const folderTextEntity = document.createElement('a-entity');
+  folderTextEntity.setAttribute('text', `value: ${folder.name}; width: ${MODIFIER * 30}; height: ${MODIFIER * 30}`)
+  folderTextEntity.setAttribute('rotation', "-90 0 0")
+  folderWrapper.appendChild(folderTextEntity);
+
   promise.then((entity) => {
     const position = entity.object3D.position;
+    const numFiles = Math.floor(files.length/4) + 1;
     boxEl.setAttribute('position', `${position.x + (MODIFIER * 2) + (MARGIN) } ${position.y} ${position.z + MARGIN}`);
+    const z = position.z + (MARGIN * numFiles) + (MODIFIER * numFiles);
+    console.log('Z', z)
+    folderTextEntity.setAttribute('position', `${position.x + (MODIFIER * 6) + (MARGIN * 4)} ${position.y + 0.1} ${z}`);
   })
 }
 
 function createFile (file, anchorEl, position) {
   const boxEl = document.createElement('a-box');
   boxEl.setAttribute('color', '#4CC3D9');
-  // boxEl.setAttribute('rotation', '0 45 0');
 
   let height = file.size * .001;
   if (height < 20) {
